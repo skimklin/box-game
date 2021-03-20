@@ -4,23 +4,26 @@ on:
     branches:
       - main
 jobs:
-  checkout-and-deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@main
-    - name: Set up Node.js
-      uses: actions/setup-node@main
-      with:
-        node-version: [12.x]
-    - name: NPM or Yarn install with caching
-      uses: bahmutov/npm-install@v1.1.0
-    - uses: borales/actions-yarn@v2.1.0
-      with:
-        cmd: build # will run `yarn build` command
-    - name: Deploy to GitHub Pages
-      uses: Cecilapp/GitHub-Pages-deploy@2.0.0
-      env:
-        EMAIL: skimklin@gmail.com               # must be a verified email
-        GH_TOKEN: ${{ secrets.ACCESS_TOKEN }} # https://github.com/settings/tokens
-        BUILD_DIR: dist/                     # "_site/" by defaul
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2.3.1
+
+      - name: Install Yarn
+        run: npm install -g yarn
+
+      - name: Install and Build 🔧
+        run: |
+          yarn
+          yarn build
+
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@4.1.0
+        with:
+          EMAIL: skimklin@gmail.com
+          GH_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          folder: dist/
+
+
+
