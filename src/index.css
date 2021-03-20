@@ -1,0 +1,19 @@
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  border: none;
+  margin: 0;
+  overflow: hidden;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+#root {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
