@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { CELL_WIDTH, CELL_HEIGHT, MoveChunk, StaticChunk, isMoveOnStaticChunk, getTargetChunkByKeyCode, isSamePosition } from '../tpyes/map';
+import { CELL_WIDTH, CELL_HEIGHT, MoveChunk, StaticChunk, isMoveOnStaticChunk, getTargetChunkByKeyCode, isSamePosition } from './map';
 import { CHUNK_TYPE, GameMap, KEY_CODES, map1, MoveKeyCodes } from './consts'
 
 /** 
@@ -94,30 +94,22 @@ export const useGame = () => {
     }
     const targetStaticChunk: StaticChunk | null = getTargetChunkByKeyCode(staticChunks, player.position, keyCode)
 
-    // console.log('targetStaticChunk', targetStaticChunk);
     if (!targetStaticChunk) return;
     if (!targetStaticChunk.isWalkable) return;
     const targetMoveChunk = boxes.find(box => isMoveOnStaticChunk(targetStaticChunk!, box))
-    // console.log('targetMoveChunk', targetMoveChunk);
     const newPlayer = new MoveChunk(CHUNK_TYPE.PLAYER, targetStaticChunk.position)
-    newPlayer.id = player.id;
-    // console.log(newPlayer)
     if (!targetMoveChunk) {
-      setPlayer(new MoveChunk(CHUNK_TYPE.PLAYER, targetStaticChunk.position))
+      setPlayer(newPlayer)
     } else {
       const boxTargetStaticChunk = getTargetChunkByKeyCode(staticChunks, targetMoveChunk.position, keyCode)
       const isBoxTargetStaticChunkEmpty = !moveChunks.find(moveChunk => isMoveOnStaticChunk
         (boxTargetStaticChunk!, moveChunk))
-      // console.log('boxTargetStaticChunk', boxTargetStaticChunk)
-      // console.log('isBoxTargetStaticChunkEmpty', isBoxTargetStaticChunkEmpty)
       if (!boxTargetStaticChunk || !boxTargetStaticChunk.isWalkable || !isBoxTargetStaticChunkEmpty) return
       const newBox = new MoveChunk(CHUNK_TYPE.BOX, boxTargetStaticChunk.position)
-      // console.log(newBox)
       setPlayer(newPlayer)
       setBoxes(origin => {
         return origin.map(e => {
           if (isSamePosition(e.position, targetStaticChunk.position)) {
-            newBox.id = e.id
             return newBox
           }
           return e

@@ -1,9 +1,8 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect } from 'react';
 import styles from './style.module.less';
 import StaticChunkRende from './StaticChunkRende';
-import { map1 } from '../tpyes/consts';
 import MoveChunkRender from './MoveChunkRender';
-import { initialGame, useGame } from '../tpyes/game';
+import { useGame } from '../utils/game';
 
 const GamePlayGround = () => {
   const { status, handlePlayerMove } = useGame()

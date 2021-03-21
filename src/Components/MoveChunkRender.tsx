@@ -1,8 +1,8 @@
 import React from 'react';
 import cx from 'classnames';
 import styles from './style.module.less';
-import { CELL_WIDTH, CELL_HEIGHT, MoveChunk } from '../tpyes/map';
-import { CHUNK_TYPE } from '../tpyes/consts';
+import { CELL_WIDTH, CELL_HEIGHT, MoveChunk } from '../utils/map';
+import { CHUNK_TYPE } from '../utils/consts';
 
 const MoveChunkRender: React.FC<{ chunk: MoveChunk }> = (props) => {
   const { chunk } = props

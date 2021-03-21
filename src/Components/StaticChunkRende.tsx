@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './style.module.less';
-import { CELL_WIDTH, CELL_HEIGHT, StaticChunk } from '../tpyes/map';
-import { CHUNK_TYPE } from '../tpyes/consts';
+import { CELL_WIDTH, CELL_HEIGHT, StaticChunk } from '../utils/map';
+import { CHUNK_TYPE } from '../utils/consts';
 
 const staticContent = (type: CHUNK_TYPE) => {
   switch (type) {
