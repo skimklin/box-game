@@ -21,7 +21,7 @@ export class GameBoardStatus {
   playerChunk: MoveChunk = new MoveChunk(CHUNK_TYPE.PLAYER);
 }
 
-export const initialGame = (map: GameMap = map1) => {
+export const initGame = (map: GameMap = map1) => {
   const gameBoardStatus = new GameBoardStatus();
   gameBoardStatus.gameBoard = {
     width: map[0].length * CELL_WIDTH,
@@ -53,8 +53,8 @@ const isGameEnd = (scoreChunks: StaticChunk[] = [], boxes: MoveChunk[]) => {
 
 export const useGame = () => {
   const resetGame = useRef(false)
-  const initGame = useCallback(() => initialGame(map1), [])
-  const [gameBoardStatus, setGameBoardStatus] = useState(initGame())
+  const init = useCallback(() => initGame(map1), [])
+  const [gameBoardStatus, setGameBoardStatus] = useState(init())
   const {
     staticChunks,
     scoreChunks,
@@ -75,12 +75,10 @@ export const useGame = () => {
     resetGame.current = true;
     setTimeout(() => {
       confirm('你赢了!');
-      setGameBoardStatus(initialGame(map1))
+      setGameBoardStatus(initGame(map1))
     }, 100);
   }
-  /**
-   * 获取移动目标的静态网格
-   */
+  
   const handlePlayerMove = useCallback((event: KeyboardEvent) => {
     console.log(event);
     if (!Object.values(KEY_CODES).includes(event.keyCode)) {
@@ -89,9 +87,12 @@ export const useGame = () => {
     const keyCode: MoveKeyCodes = event.keyCode;
     if (keyCode === KEY_CODES.EXIST) {
       console.log('EXIST')
-      setGameBoardStatus(initialGame(map1))
+      setGameBoardStatus(initGame(map1))
       return;
     }
+    /**
+     * 获取移动目标的静态网格
+     */
     const targetStaticChunk: StaticChunk | null = getTargetChunkByKeyCode(staticChunks, player.position, keyCode)
 
     if (!targetStaticChunk) return;
