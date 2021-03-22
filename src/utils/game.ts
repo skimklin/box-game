@@ -54,7 +54,7 @@ const isGameEnd = (scoreChunks: StaticChunk[] = [], boxes: MoveChunk[]) => {
 const initialGame = initGame();
 
 export const useGame = () => {
-  const resetGame = useRef(false)
+  const gameIsOver = useRef(false)
   const [gameBoardStatus, setGameBoardStatus] = useState(initialGame)
   const {
     staticChunks,
@@ -64,28 +64,33 @@ export const useGame = () => {
   } = gameBoardStatus;
   const [player, setPlayer] = useState(playerChunk);
   const [boxes, setBoxes] = useState(boxChunks);
+  const [steps, setSteps] = useState(0);
   const moveChunks = useMemo(() => [player, ...boxes], [player, boxes]);
 
   useEffect(() => {
     setPlayer(playerChunk)
     setBoxes(boxChunks)
-    resetGame.current = false;
-  }, [playerChunk, boxChunks])
+    setSteps(0)
+    gameIsOver.current = false;
+  }, [playerChunk, boxChunks, gameBoardStatus])
 
-  if (isGameEnd(scoreChunks, boxes) && !resetGame.current) {
-    resetGame.current = true;
+  if (isGameEnd(scoreChunks, boxes) && !gameIsOver.current) {
+    console.log('game end')
+    gameIsOver.current = true;
+    Promise.resolve().then(() => {
+      setGameBoardStatus(initGame(map1))
+    })
     setTimeout(() => {
       confirm('你赢了!');
-      setGameBoardStatus(initGame(map1))
-    }, 100);
+    }, 500);
   }
   
   const handlePlayerMove = useCallback((event: KeyboardEvent) => {
     console.log(event);
-    if (!Object.values(KEY_CODES).includes(event.keyCode)) {
+    if (!Object.values<string>(KEY_CODES).includes(event.code)) {
       return;
     }
-    const keyCode: MoveKeyCodes = event.keyCode;
+    const keyCode: MoveKeyCodes = event.code;
     if (keyCode === KEY_CODES.EXIST) {
       console.log('EXIST')
       setGameBoardStatus(initGame(map1))
@@ -102,6 +107,7 @@ export const useGame = () => {
     const newPlayer = new MoveChunk(CHUNK_TYPE.PLAYER, targetStaticChunk.position)
     if (!targetMoveChunk) {
       setPlayer(newPlayer)
+      setSteps(origin => origin + 1)
     } else {
       const boxTargetStaticChunk = getTargetChunkByKeyCode(staticChunks, targetMoveChunk.position, keyCode)
       const isBoxTargetStaticChunkEmpty = !moveChunks.find(moveChunk => isMoveOnStaticChunk
@@ -117,6 +123,7 @@ export const useGame = () => {
           return e
         })
       })
+      setSteps(origin => origin + 1)
     }
   }, [gameBoardStatus, staticChunks, moveChunks])
 
@@ -126,5 +133,5 @@ export const useGame = () => {
     moveChunks: moveChunks
   }), [gameBoardStatus, staticChunks, moveChunks])
 
-  return { status, handlePlayerMove };
+  return { status, handlePlayerMove, steps };
 }

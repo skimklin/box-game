@@ -1,10 +1,13 @@
 import React, { useState } from 'react'
-import logo from './logo.svg'
 import GamePlayGround from './Components/GamePlayGround';
+import Description from './Components/Description';
 
 function App() {
   return (
-    <GamePlayGround/>
+    <React.Fragment>
+      <Description/>
+      <GamePlayGround/>
+    </React.Fragment>
   )
 }
 

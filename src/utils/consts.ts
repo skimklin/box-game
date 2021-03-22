@@ -38,11 +38,11 @@ export const map1: GameMap = [
 ];
 
 export enum KEY_CODES {
-  LEFT = 37,
-  UP,
-  RIGHT,
-  DOWN,
-  EXIST = 27,
+  LEFT = 'ArrowLeft',
+  UP = 'ArrowUp',
+  RIGHT = 'ArrowRight',
+  DOWN = 'ArrowDown',
+  EXIST = 'Escape',
 }
 
 export type MoveKeyCodes = Omit<KEY_CODES, KEY_CODES.EXIST>

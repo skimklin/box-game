@@ -5,7 +5,7 @@ import MoveChunkRender from './MoveChunkRender';
 import { useGame } from '../utils/game';
 
 const GamePlayGround = () => {
-  const { status, handlePlayerMove } = useGame()
+  const { status, handlePlayerMove, steps } = useGame()
   const { gameBoardStatus, staticChunks, moveChunks } = status;
   const {
     gameBoard,
@@ -22,6 +22,9 @@ const GamePlayGround = () => {
 
   return (
     <div className={styles.container} style={containerStyle}>
+      <div className={styles.stepCountBoard}>
+        步数: {steps}
+      </div>
       {staticChunks.map((row, i) => (
         <div className={styles.rowContainer} key={i}>
           {row.map((cell, i) => (
