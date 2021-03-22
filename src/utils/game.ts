@@ -51,10 +51,11 @@ const isGameEnd = (scoreChunks: StaticChunk[] = [], boxes: MoveChunk[]) => {
   return scoreChunks.every(score => boxes.some(box => isMoveOnStaticChunk(score, box)))
 }
 
+const initialGame = initGame();
+
 export const useGame = () => {
   const resetGame = useRef(false)
-  const init = useCallback(() => initGame(map1), [])
-  const [gameBoardStatus, setGameBoardStatus] = useState(init())
+  const [gameBoardStatus, setGameBoardStatus] = useState(initialGame)
   const {
     staticChunks,
     scoreChunks,
